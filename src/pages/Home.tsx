@@ -6,12 +6,14 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import {
   AppShell,
   Box,
+  Button,
   Card,
   Center,
   Container,
   Divider,
   Flex,
   Grid,
+  Group,
   Header,
   Image,
   Input,
@@ -25,7 +27,7 @@ import {
 import { Character } from "../types";
 function Home() {
   
-  const { people, setQuery, loading, count, changePage,error } = useSwapi();
+  const { people, setQuery, loading, count, changePage,error,refresh,fetching } = useSwapi();
   const [character, setCharacter] = useState<Character>();
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
   const [opened, setOpened] = useState(false);
@@ -45,9 +47,12 @@ function Home() {
     );
   }
 
-  if(!navigator.onLine  && people==undefined){
-    return  <div className="w-full h-full flex items-center justify-center">
-     <Text fw={700} lh={100}>You are offline please connect to the internet</Text>
+  if(!navigator.onLine && !fetching  && people==undefined){
+    return  <div className="w-full h-full flex flex-row items-center justify-center">
+      <Group className="flex-row">
+      <Text fw={700} lh={100}>You are offline please connect to the internet</Text>
+     <Button size="md" variant="default" onClick={()=>refresh()}>Refresh</Button>
+      </Group>
      </div>
    
   }
@@ -77,7 +82,7 @@ function Home() {
           shadow="md"
         >
           <div className="flex justify-center items-center flex-row w-full h-full   ">
-            <div className="h-full  w-1/2 overflow-">
+            <div className="h-full  w-1/2 overflow- flex justify-center items-center">
               <Image src={character?.img} width={200} height={300} fit="contain"/>
             </div>
             <Divider orientation="vertical" mx={"md"} />
@@ -102,6 +107,11 @@ function Home() {
         <SimpleGrid
           cols={4}
           spacing="xs"
+          breakpoints={[
+            { maxWidth: 980, cols: 3, spacing: 'md' },
+            { maxWidth: 755, cols: 2, spacing: 'sm' },
+            { maxWidth: 600, cols: 1, spacing: 'sm' },
+          ]}
           p={"lg"}
           className="place-items-center mt-4 rounded-full"
           verticalSpacing={"lg"}
