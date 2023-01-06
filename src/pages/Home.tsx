@@ -47,19 +47,16 @@ function Home() {
     );
   }
 
-  if(!navigator.onLine && !fetching  && people==undefined){
-    return  <div className="w-full h-full flex flex-row items-center justify-center">
-      <Group className="flex-row">
+  if(!navigator.onLine && people==undefined && !fetching  ){
+    return  <div className="w-full flex  h-12 items-center justify-center">
       <Text fw={700} lh={100}>You are offline please connect to the internet</Text>
-     <Button size="md" variant="default" onClick={()=>refresh()}>Refresh</Button>
-      </Group>
      </div>
    
   }
   return (
     <>
       <LoadingOverlay
-        visible={loading}
+        visible={fetching}
         overlayBlur={0}
         loader={<BeatLoader color="blue" />}
       />
@@ -95,12 +92,11 @@ function Home() {
             </div>
           </div>
         </Modal>
-        <Center component="div" className="w-full mt-4 md:box-border ">
+        <Center component="div" className="w-full my-4 md:box-border ">
           <Input
             icon={<MagnifyingGlassIcon height={20} />}
             variant="filled"
             placeholder="Search"
-            className={loading?"hidden":""}
             onInput={(event) => debounce(event.currentTarget.value)}
           />
         </Center>
