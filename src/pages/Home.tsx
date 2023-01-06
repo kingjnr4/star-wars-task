@@ -132,6 +132,7 @@ function Home() {
           total={count}
           position="center"
           onChange={changePage}
+          mb="md"
           styles={(theme) => ({
             item: {
               "&[data-active]": {
